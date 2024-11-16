@@ -2,6 +2,15 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb+srv://haotran04022005:LdaX8GHe8ymyxdka@task-management.ixw2q.mongodb.net/?retryWrites=true&w=majority&appName=task-management",
+);
+
+const Product = mongoose.model("Product", {
+  title: String,
+  price: String,
+  thumnail: String,
+});
 
 app.set("view engine", "pug");
 app.set("views", "./views");
@@ -20,7 +29,9 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/products", (req, res) => {
+app.get("/products", async (req, res) => {
+  const products = await Product.find({});
+  console.log(products);
   res.send("<h1>Product List</h1>");
 });
 

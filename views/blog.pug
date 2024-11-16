@@ -1,1 +1,10 @@
+extends layouts/default.pug
 
+block main
+  h1 Post page
+
+  ul
+    each blog in blogs
+      li #{blog}
+
+  include partials/category.pug
