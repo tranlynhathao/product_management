@@ -1,0 +1,7 @@
+extends layouts/default.pug
+include mixins/box.pug
+
+block main
+  +box("Product list", "Description of page")
+
+  div #{product}
