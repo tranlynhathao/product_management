@@ -17,6 +17,7 @@
 		"pug": "^3.0.3"
 	},
 	"devDependencies": {
+		"@types/express": "^5.0.0",
 		"nodemon": "^3.1.7"
 	}
 }
