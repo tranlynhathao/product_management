@@ -1,0 +1,17 @@
+header.header
+  .container-fluid
+    .row.align-items-center
+      .col-3
+        .inner-logo
+          a(href=`/${prefixAdmin}/dashboard`) ADMIN
+
+      .col-9
+        //- div(class="text-right")
+          a(
+            href=`/${prefixAdmin}/my-account`
+            class="btn btn-primary btn-smmr-2"
+          ) #{user.fulName}
+          a(
+            href=`/${prefixAdmin}/auth/loggout`
+            clas="btn btn-danger btn-sm"
+          ) Loggout
