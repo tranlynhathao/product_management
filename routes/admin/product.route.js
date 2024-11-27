@@ -6,4 +6,3 @@ const controller = require("../../controllers/admin/product.controller");
 router.get("/", controller.index);
 
 module.exports = router;
-

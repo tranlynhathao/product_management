@@ -1,4 +1,3 @@
-const { connect } = require("http2");
 const mongoose = require("mongoose");
 
 module.exports.connect = async () => {
