@@ -3,34 +3,68 @@ extends ../../layouts/default
 block main
   h1 Product List
 
-  table.table.table-hover.table.sm
-    thead
-      tr
-        th Order
-        th Image
-        th Title
-        th Price
-        th Status
-        th Edit
+  .card.mb-3
+    .card-header Filter and Search
+      .card-body
+        .row
+          .col-6
+            each item in filterStatus
+              button(
+                class=`btn btn-sm ml-1 btn-outline-success ${item.class}`
+                button-status=item.status
+              ) #{item.name}
+          .col-6
+            form(id="form-search")
+              .input-group
+                input(
+                  type="text"
+                  placeholder="Enter keywords"
+                  name="keywords"
+                  class="form-control"
+                )
+              .input-group-append
+                button(
+                  class="btn btn-success"
+                  type="submit"
+                ) Search
 
-    tbody
-      each item, index in products
-        tr
-          td #{index + 1}
-          td
-            img(
-              src=item.thumbnail
-              alt=item.title
-              width="100px"
-              height="auto"
-            )
-          td #{item.title}
-          td $#{item.price}
-          td
-            a(
-              href="#"
-              class="badge text-bg-success"
-            ) Active
-          td
-            button(class="btn btn-warning btn-sm") Edit
-            button(class="btn btn-danger btn-sm ml-1") Delete
+  .card.mb-3
+    .card-header List
+      .card-body
+        table.table.table-hover.table.sm
+          thead
+            tr
+              th Order
+              th Image
+              th Title
+              th Price
+              th Status
+              th Edit
+
+          tbody
+            each item, index in products
+              tr
+                td #{index + 1}
+                td
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.title}
+                td $#{item.price}
+                td
+                  if(item.status)
+                    a(
+                      href="#"
+                      class="badge text-bg-success"
+                    ) Active
+                  else
+                    a(
+                      href="#"
+                      class="badge text-bg-danger"
+                    ) Inactive
+                td
+                  button(class="btn btn-warning btn-sm") Edit
+                  button(class="btn btn-danger btn-sm ml-1") Delete
