@@ -33,6 +33,11 @@ module.exports.index = async (req, res) => {
   objectPagination.skip =
     (objectPagination.currentPage - 1) * objectPagination.limitItem;
 
+  const countProduct = await Product.countDocuments(find);
+  const totalPage = Math.ceil(countProduct / objectPagination.limitItem);
+
+  objectPagination.totalPage = totalPage;
+
   const products = await Product.find(find)
     .limit(objectPagination.limitItem)
     .skip(objectPagination.skip);
@@ -42,5 +47,6 @@ module.exports.index = async (req, res) => {
     products: products,
     filterStatus: filterStatus,
     keyword: objectSearch.keyword,
+    pagination: objectPagination,
   });
 };
