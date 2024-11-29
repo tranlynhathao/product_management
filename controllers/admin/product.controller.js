@@ -20,7 +20,22 @@ module.exports.index = async (req, res) => {
     find.title = objectSearch.regrex;
   }
 
-  const products = await Product.find(find);
+  // Pagination
+  let objectPagination = {
+    limitItem: 4,
+    currentPage: 1,
+  };
+
+  if (req.query.page) {
+    objectPagination.currentPage = parseInt(req.query.page);
+  }
+
+  objectPagination.skip =
+    (objectPagination.currentPage - 1) * objectPagination.limitItem;
+
+  const products = await Product.find(find)
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip);
 
   res.render("admin/pages/products/index", {
     pageTitle: "Product List",
