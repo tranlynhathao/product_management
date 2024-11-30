@@ -42,14 +42,20 @@ block main
                 td #{item.title}
                 td $#{item.price}
                 td
-                  if(item.status)
+                  if(item.status == "active")
                     a(
-                      href="#"
+                      href="javascript:void(0);"
+                      data-status="active"
+                      data-id=item.id
+                      button-change-status
                       class="badge text-bg-success"
                     ) Active
                   else
                     a(
-                      href="#"
+                      href="javascript:void(0);"
+                      data-status="inactive"
+                      data-id=item.id
+                      button-change-status
                       class="badge text-bg-danger"
                     ) Inactive
                 td
@@ -57,3 +63,12 @@ block main
                   button(class="btn btn-danger btn-sm ml-1") Delete
 
   +pagination(pagination)
+
+  form(
+    action=""
+    method="POST"
+    id="form-change-status"
+    data-path=`/${prefixAdmin}/products/change-status`
+  )
+
+  script(src="/admin/js/product.js")
