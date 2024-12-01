@@ -1,11 +1,13 @@
 const express = require("express");
 const methodOverride = require("method-override");
+const bodyParser = require("body-parser");
 const app = express();
+require("dotenv").config();
 
 app.use(methodOverride("_method"));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 const port = process.env.PORT || 3000;
-require("dotenv").config();
 const database = require("./config/database");
 const systemConfig = require("./config/system");
 
@@ -27,5 +29,5 @@ routeClient(app);
 routeAdmin(app);
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+  console.log(`app listening on port ${port}`);
 });
