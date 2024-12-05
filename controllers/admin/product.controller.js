@@ -57,7 +57,7 @@ module.exports.changeStatus = async (req, res) => {
   res.redirect("back");
 };
 
-// [PATCH] /admin/products/change-multi/:status/:id
+// [PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
@@ -69,6 +69,13 @@ module.exports.changeMulti = async (req, res) => {
 
     case "inactive":
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      break;
+
+    case "delete-all":
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        { deleted: true, deletedAt: new Date() },
+      );
       break;
 
     default:
@@ -98,7 +105,7 @@ module.exports.trash = async (req, res) => {
   const filterStatus = filterStatusHelper(req.query);
 
   let find = {
-    deleted: true, // Lấy các sản phẩm đã bị đánh dấu là deleted
+    deleted: true,
   };
 
   const objectSearch = searchHelper(req.query);

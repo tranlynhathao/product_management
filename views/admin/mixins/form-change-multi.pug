@@ -7,8 +7,10 @@ mixin form-change-multi(path)
     .d-flex.align-item-carts
       .form-group
         select(name="type" class="form-control")
+          option(disabled) -- Choose action --
           option(value="active") Active
           option(value="inactive") Inactive
+          option(value="delete-all") Delete all
       .form-group
         input(
           type="text"

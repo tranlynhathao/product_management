@@ -99,6 +99,14 @@ if (formChangeMulti) {
       "input[name='id']:checked",
     );
 
+    const typeChange = e.target.elements.type.value;
+    if (typeChange == "delete-all") {
+      const isConfirm = confirm("Are you sure to delete all products?");
+      if (!isConfirm) {
+        return;
+      }
+    }
+
     if (inputChecked.length > 0) {
       let ids = [];
       const inputIds = formChangeMulti.querySelector("input[name='ids']");
