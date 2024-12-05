@@ -3,12 +3,17 @@ const router = express.Router();
 
 const controller = require("../../controllers/admin/product.controller");
 
-router.get("/", controller.index);
+// Routes for product management
+router.get("/", controller.index); // List products
 
-router.patch("/change-status/:status/:id", controller.changeStatus);
+router.get("/trash", controller.trash); // List deleted products
 
-router.patch("/change-multi", controller.changeMulti);
+router.patch("/change-status/:status/:id", controller.changeStatus); // Change product status
 
-router.delete("/delete/:id", controller.deleteItem);
+router.patch("/change-multi", controller.changeMulti); // Bulk status change
+
+router.delete("/delete/:id", controller.deleteItem); // Soft delete product
+
+router.patch("/restore/:id", controller.restore); // Restore deleted product
 
 module.exports = router;

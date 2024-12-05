@@ -1,0 +1,59 @@
+extends ../../layouts/default
+include ../../mixins/filterStatus
+include ../../mixins/search
+include ../../mixins/pagination
+
+block main
+  h1 Trash - Deleted Products
+
+  .card.mb-3
+    .card-header Filter and Search
+      .card-body
+        .row
+          .col-6
+            +filter-status(filterStatus)
+          .col-6
+            +search(keyword)
+
+  .card.mb-3
+    .card-header List of Deleted Products
+      .card-body
+        table(
+          class="table table-hover table-sm"
+        )
+          thead
+            tr
+              th Order
+              th Image
+              th Title
+              th Price
+              th Status
+              th Restore
+
+          tbody
+            each item, index in products
+              tr
+                td #{index + 1}
+                td
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.title}
+                td $#{item.price}
+                td #{item.status}
+                td
+                  form(
+                    action=`/${prefixAdmin}/products/restore/${item.id}?_method=PATCH`
+                    method="POST"
+                    style="display:inline;"
+                  )
+                    button(
+                      class="btn btn-primary btn-sm"
+                      type="submit"
+                    ) Restore
+
+  +pagination(pagination)
+

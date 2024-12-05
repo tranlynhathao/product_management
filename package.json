@@ -12,10 +12,10 @@
 	"dependencies": {
 		"body-parser": "^1.20.3",
 		"bootstrap": "^5.3.3",
-		"dotenv": "^16.4.5",
+		"dotenv": "^16.4.7",
 		"express": "^4.21.1",
 		"method-override": "^3.0.0",
-		"mongoose": "^8.8.2",
+		"mongoose": "^8.8.3",
 		"pug": "^3.0.3"
 	},
 	"devDependencies": {

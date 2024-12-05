@@ -93,4 +93,56 @@ module.exports.deleteItem = async (req, res) => {
   res.redirect("back");
 };
 
+// [GET] /admin/products/trash
+module.exports.trash = async (req, res) => {
+  const filterStatus = filterStatusHelper(req.query);
+
+  let find = {
+    deleted: true, // Lấy các sản phẩm đã bị đánh dấu là deleted
+  };
+
+  const objectSearch = searchHelper(req.query);
+
+  if (objectSearch.regrex) {
+    find.title = objectSearch.regrex;
+  }
+
+  // Pagination
+  const countProduct = await Product.countDocuments(find);
+
+  let objectPagination = paginationHelper(
+    {
+      limitItem: 4,
+      currentPage: 1,
+    },
+    req.query,
+    countProduct,
+  );
+
+  const products = await Product.find(find)
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip);
+
+  res.render("admin/pages/products/trash", {
+    pageTitle: "Trash - Deleted Products",
+    products: products,
+    filterStatus: filterStatus,
+    keyword: objectSearch.keyword,
+    pagination: objectPagination,
+  });
+};
+
 // [PATCH] /admin/products/restore/:id
+module.exports.restore = async (req, res) => {
+  const id = req.params.id;
+
+  await Product.updateOne(
+    { _id: id },
+    {
+      deleted: false,
+      deletedAt: null,
+    },
+  );
+
+  res.redirect("/admin/products/trash");
+};
