@@ -40,6 +40,7 @@ block main
               th Image
               th Title
               th Price
+              th Position
               th Status
               th Edit
 
@@ -58,6 +59,11 @@ block main
                   )
                 td #{item.title}
                 td $#{item.price}
+                td
+                  input(
+                    type="number"
+                    value=item.position
+                  )
                 td
                   if(item.status == "active")
                     a(
