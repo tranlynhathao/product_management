@@ -3,8 +3,10 @@ include ../../mixins/filterStatus
 include ../../mixins/search
 include ../../mixins/pagination
 include ../../mixins/form-change-multi
+include ../../mixins/alert
 
 block main
+  +alert-success(3000)
   h1 Product List
 
   .card.mb-3

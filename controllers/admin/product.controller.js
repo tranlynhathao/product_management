@@ -55,6 +55,8 @@ module.exports.changeStatus = async (req, res) => {
 
   await Product.updateOne({ _id: id }, { status: status });
 
+  req.flash("success", "Update Successfully");
+
   res.redirect("back");
 };
 
@@ -66,16 +68,28 @@ module.exports.changeMulti = async (req, res) => {
   switch (type) {
     case "active":
       await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash(
+        "success",
+        `Update status for ${ids.length} product${ids.length > 2 ? "s" : ""} Successfully`,
+      );
       break;
 
     case "inactive":
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash(
+        "success",
+        `Update status for ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
+      );
       break;
 
     case "delete-all":
       await Product.updateMany(
         { _id: { $in: ids } },
         { deleted: true, deletedAt: new Date() },
+      );
+      req.flash(
+        "success",
+        `Delete ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
       );
       break;
 
@@ -87,6 +101,11 @@ module.exports.changeMulti = async (req, res) => {
 
         await Product.updateOne({ _id: id }, { position: position });
       }
+      req.flash(
+        "success",
+        `Change position for ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
+      );
+      break;
 
     default:
       break;
@@ -159,6 +178,11 @@ module.exports.restore = async (req, res) => {
       deleted: false,
       deletedAt: null,
     },
+  );
+
+  req.flash(
+    "success",
+    `Delete ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
   );
 
   res.redirect("/admin/products/trash");
