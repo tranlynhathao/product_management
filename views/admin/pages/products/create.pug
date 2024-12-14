@@ -72,7 +72,7 @@ block main
       )
 
     div(class="form-group")
-      label(for="discount") % Discount
+      label(for="discount") Discount
       input(
         type="number"
         class="form-control"
@@ -98,6 +98,7 @@ block main
       upload-image
     )
       label(for="thumbnail") Image
+      br
       input(
         type="file"
         class="form-control-file"
@@ -122,6 +123,27 @@ block main
         placeholder="Tự động tăng"
         min="1"
       )
+
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusActive"
+        name="status"
+        value="active"
+        checked
+      )
+      label(for="statusActive" class="form-check-label") Hoạt động
+    div(class="form-group form-check form-check-inline")
+      input(
+        type="radio"
+        class="form-check-input"
+        id="statusInActive"
+        name="status"
+        value="inactive"
+      )
+      label(for="statusInActive" class="form-check-label") Dừng hoạt động
+
     div(class="form-group")
       button(
         type="submit"

@@ -1,5 +1,8 @@
+const multer = require("multer");
 const express = require("express");
 const router = express.Router();
+const storageMulter = require("../../helpers/storageMulter");
+const upload = multer({ storage: storageMulter() });
 
 const controller = require("../../controllers/admin/product.controller");
 
@@ -18,6 +21,6 @@ router.patch("/restore/:id", controller.restore); // Restore deleted product
 
 router.get("/create", controller.create);
 
-router.post("/create", controller.createPost);
+router.post("/create", upload.single("thumbnail"), controller.createPost);
 
 module.exports = router;
