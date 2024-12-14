@@ -16,4 +16,8 @@ router.delete("/delete/:id", controller.deleteItem); // Soft delete product
 
 router.patch("/restore/:id", controller.restore); // Restore deleted product
 
+router.get("/create", controller.create);
+
+router.post("/create", controller.createPost);
+
 module.exports = router;

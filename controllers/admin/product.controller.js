@@ -2,7 +2,7 @@ const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
-const pagination = require("../../helpers/pagination");
+const systemConfig = require("../../config/system");
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -186,4 +186,35 @@ module.exports.restore = async (req, res) => {
   );
 
   res.redirect("/admin/products/trash");
+};
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+  res.render("admin/pages/products/create", {
+    pageTitle: "Add new product",
+  });
+};
+
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+  try {
+    req.body.price = parseFloat(req.body.price) || 0;
+    req.body.discountPercentage = parseFloat(req.body.discountPercentage) || 0;
+    req.body.stock = parseInt(req.body.stock, 10) || 0;
+
+    if (!req.body.position || req.body.position.trim() === "") {
+      const countProducts = await Product.countDocuments();
+      req.body.position = countProducts + 1;
+    } else {
+      req.body.position = parseInt(req.body.position, 10) || 0;
+    }
+
+    const product = new Product(req.body);
+    await product.save();
+
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  } catch (error) {
+    console.error("Error creating product:", error);
+    res.status(500).send("An error occurred while creating the product.");
+  }
 };
