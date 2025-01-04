@@ -92,10 +92,9 @@ block main
                       class="badge text-bg-danger"
                     ) Inactive
                 td
-                  button(
+                  a(
+                    href=`/${prefixAdmin}/products/edit/${item.id}`
                     class="btn btn-warning btn-sm"
-                    button-edit
-                    data-id=item.id
                   ) Edit
                   button(
                     class="btn btn-danger btn-sm ml-1"

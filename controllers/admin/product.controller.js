@@ -197,7 +197,6 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
-  console.log(req.file);
   try {
     req.body.price = parseFloat(req.body.price) || 0;
     req.body.discountPercentage = parseFloat(req.body.discountPercentage) || 0;
@@ -217,7 +216,57 @@ module.exports.createPost = async (req, res) => {
 
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.error("Error creating product: ", error);
+    res.status(500).send("An error occurred while creating the product.");
+  }
+};
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
+
+    const product = await Product.findOne(find);
+
+    res.render("admin/pages/products/edit", {
+      pageTitle: "Edit product",
+      product: product,
+    });
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  }
+};
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+  try {
+    req.body.price = parseFloat(req.body.price) || 0;
+    req.body.discountPercentage = parseFloat(req.body.discountPercentage) || 0;
+    req.body.stock = parseInt(req.body.stock, 10) || 0;
+    req.body.position = parseInt(req.body.position);
+    const id = req.params.id;
+
+    if (req.file) {
+      req.body.thumbnail = `/upload/${req.file.filename}`;
+    }
+
+    try {
+      await Product.updateOne(
+        {
+          _id: id,
+        },
+        req.body,
+      );
+    } catch (error) {}
+
+    // res.redirect(`/${systemConfig.prefixAdmin}/products`);
+
+    res.redirect("back");
+  } catch (error) {
+    console.error("Error creating product: ", error);
     res.status(500).send("An error occurred while creating the product.");
   }
 };
