@@ -17,6 +17,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       slug: "title",
       unique: true,
+      sparse: true,
     },
     deleted: { type: Boolean, default: false },
     deletedAt: { type: Date, default: null },
