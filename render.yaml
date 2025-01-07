@@ -1,0 +1,12 @@
+services:
+  - type: web
+    runtime: "node"
+    name: product-management
+    # env: node
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    branch: main
+    autoDeploy: true
+    pullRequestPreviewsEnabled: true
+
