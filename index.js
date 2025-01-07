@@ -14,7 +14,7 @@ app.use(cookieParser("lkjhgfdsa"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const database = require("./config/database");
 const systemConfig = require("./config/system");
 
@@ -23,13 +23,13 @@ const routeAdmin = require("./routes/admin/index.route");
 
 database.connect();
 
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 // app local variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 
 // Routes
 routeClient(app);
