@@ -4,37 +4,55 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const app = express();
+const helmet = require("helmet");
+const compression = require("compression");
+const path = require("path");
 require("dotenv").config();
 
-app.use(methodOverride("_method"));
+const app = express();
+const port = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser("lkjhgfdsa"));
-app.use(session({ cookie: { maxAge: 60000 } }));
-app.use(flash());
-
-const port = process.env.PORT;
 const database = require("./config/database");
 const systemConfig = require("./config/system");
 
 const routeClient = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
 
-database.connect();
+// Middleware
+app.use(helmet());
+app.use(compression());
+app.use(methodOverride("_method"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.COOKIE_SECRET || "default_cookie_secret"));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "default_session_secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 },
+  }),
+);
+app.use(flash());
 
-app.set("views", `${__dirname}/views`);
+database.connect().catch((err) => {
+  console.error("Failed to connect to database:", err.message);
+  process.exit(1);
+});
+
+// View Engine Configuration
+app.set("views", path.resolve(__dirname, "views"));
 app.set("view engine", "pug");
 
-// app local variables
+// Local variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-app.use(express.static(`${__dirname}/public`));
+// Static files
+app.use(express.static(path.resolve(__dirname, "public")));
 
 // Routes
 routeClient(app);
 routeAdmin(app);
 
 app.listen(port, () => {
-  console.log(`app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
