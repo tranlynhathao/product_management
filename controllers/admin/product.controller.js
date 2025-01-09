@@ -57,7 +57,12 @@ module.exports.changeStatus = async (req, res) => {
 
   req.flash("success", "Update Successfully");
 
-  res.redirect("back");
+  const referer = req.get("Referer");
+  if (referer && !referer.includes("/admin/products")) {
+    res.redirect(referer);
+  } else {
+    res.redirect("/admin/products");
+  }
 };
 
 // [PATCH] /admin/products/change-multi
@@ -182,7 +187,7 @@ module.exports.restore = async (req, res) => {
 
   req.flash(
     "success",
-    `Delete ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
+    `Restore ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
   );
 
   res.redirect("/admin/products/trash");

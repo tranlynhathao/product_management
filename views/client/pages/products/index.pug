@@ -13,7 +13,7 @@ block main
           .product-item
             .inner-image
               img(
-                src=item.thumbnail
+                src=(item.thumbnail ? item.thumbnail : '/upload/default.jpeg.webp')
                 alt=item.title
               )
             .inner-content
