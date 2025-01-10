@@ -33,6 +33,7 @@
 		"speakingurl": "^14.0.1"
 	},
 	"devDependencies": {
+		"@types/compression": "^1.7.5",
 		"@types/express": "^5.0.0",
 		"nanoid": "^5.0.9",
 		"nodemon": "^3.1.7"

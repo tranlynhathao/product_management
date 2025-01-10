@@ -58,6 +58,7 @@ module.exports.changeStatus = async (req, res) => {
   req.flash("success", "Update Successfully");
 
   const referer = req.get("Referer");
+
   if (referer && !referer.includes("/admin/products")) {
     res.redirect(referer);
   } else {
@@ -116,7 +117,13 @@ module.exports.changeMulti = async (req, res) => {
       break;
   }
 
-  res.redirect("back");
+  const referer = req.get("Referer");
+
+  if (referer && !referer.includes("/admin/products")) {
+    res.redirect(referer);
+  } else {
+    res.redirect("/admin/products");
+  }
 };
 
 // [DELETE] /admin/products/delete/:id
@@ -131,7 +138,13 @@ module.exports.deleteItem = async (req, res) => {
     },
   );
 
-  res.redirect("back");
+  const referer = req.get("Referer");
+
+  if (referer && !referer.includes("/admin/products")) {
+    res.redirect(referer);
+  } else {
+    res.redirect("/admin/products");
+  }
 };
 
 // [GET] /admin/products/trash
@@ -177,20 +190,22 @@ module.exports.trash = async (req, res) => {
 module.exports.restore = async (req, res) => {
   const id = req.params.id;
 
-  await Product.updateOne(
-    { _id: id },
-    {
-      deleted: false,
-      deletedAt: null,
-    },
-  );
+  try {
+    await Product.updateOne(
+      { _id: id },
+      {
+        deleted: false,
+        deletedAt: null,
+      },
+    );
 
-  req.flash(
-    "success",
-    `Restore ${ids.length} product${ids.length >= 2 ? "s" : ""} successfully`,
-  );
-
-  res.redirect("/admin/products/trash");
+    req.flash("success", "Restore product successfully");
+    res.redirect("/admin/products/trash");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "An error occurred while restoring the product.");
+    res.redirect("/admin/products/trash");
+  }
 };
 
 // [GET] /admin/products/create
@@ -267,9 +282,13 @@ module.exports.editPatch = async (req, res) => {
       );
     } catch (error) {}
 
-    // res.redirect(`/${systemConfig.prefixAdmin}/products`);
+    const referer = req.get("Referer");
 
-    res.redirect("back");
+    if (referer && !referer.includes("/admin/products")) {
+      res.redirect(referer);
+    } else {
+      res.redirect(`/admin/products/edit/${id}`);
+    }
   } catch (error) {
     console.error("Error creating product: ", error);
     res.status(500).send("An error occurred while creating the product.");
